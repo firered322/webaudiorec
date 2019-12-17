@@ -168,8 +168,7 @@ window.onresize();
 /////////////////////////////////////////////////////////////////////////
 
 
-var context;
-var cntText;
+var context, context2;
 var cnt=0;
 var start=0;
 var mydata = [160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
@@ -216,65 +215,127 @@ var mydata = [160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
 					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
 					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
 					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
-					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190];
+          160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+          160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,];
+
+function init() {
+  context= myCanvas.getContext('2d');
+  context.fillStyle = "#737373";
+  context.fill();
+}
+
+function init2(){
+  context2 = myCanvas2.getContext('2d')
+  context2.fillStyle = "#737373";
+  context2.fill();
+}
+
+function drawLine(x1,y1,x2,y2,color) {
+  context.beginPath();
+  context.moveTo(x1,y1);
+  context.lineTo(x2,y2);
+  context.strokeStyle = color;
+  context.lineWidth = 1;
+  context.stroke();
+}
+
+function drawLine2(x1,y1,x2,y2,color) {
+  context2.beginPath();
+  context2.moveTo(x1,y1);
+  context2.lineTo(x2,y2);
+  context2.strokeStyle = color;
+  context2.lineWidth = 1;
+  context2.stroke();
+}
 	
-	function init() {
-	 context= myCanvas.getContext('2d');
-	 cntText=document.getElementById("data");
-	 context.fillStyle = "#737373";
-   context.fill();
+function move() {
+  var j=0;
+  var lastx=0;
+  var lasty=160;
+  var pos=0;
+  cleareData();
+  start=cnt;
+  
+  if(cnt>120) {
+    start=120;
+    pos=cnt-120;
+  }
+
+  for(i=0;i<start;i++) {
+    var p=i*5;
+    drawLine(lastx,lasty,p,mydata[pos],"#000000");
+    lastx=p;
+    lasty=mydata[pos];
+    pos++;
   }
   
-	function drawLine(x1,y1,x2,y2,color) {
-		context.beginPath();
-		context.moveTo(x1,y1);
-		context.lineTo(x2,y2);
-		context.strokeStyle = color;
-		context.lineWidth = 1;
-		context.stroke();
-	}
+  cnt=cnt+1;
+}
 	
-	function move() {
-		var j=0;
-		var lastx=0;
-		var lasty=160;
-		var pos=0;
-		cleareData();
-    start=cnt;
-    
-		if(cnt>120) {
-			start=120;
-			pos=cnt-120;
+function cleareData() {
+  context.clearRect(0, 0, 600, 600);
+  
+  for(i=0;i<600;i++){
+    drawLine(i,0,i,300,"#CCCCCC");
+    i=i+19
     }
+    
+    for(i=0;i<300;i++) {
+    drawLine(0,i,600,i,"#CCCCCC");
+    i=i+19
+    }
+    
+    drawLine(0,160,600,160,"#000000");
+}
 
-		for(i=0;i<start;i++) {
-			var p=i*5;
-			drawLine(lastx,lasty,p,mydata[pos],"#000000");
-			lastx=p;
-			lasty=mydata[pos];
-			pos++;
+function cleareData2() {
+  context2.clearRect(0, 0, 600, 600);
+  
+  for(i=0;i<600;i++){
+    drawLine2(i,0,i,300,"#CCCCCC");
+    i=i+19
     }
     
-		cnt=cnt+1;
-	}
-	
-	function cleareData() {
-    context.clearRect(0, 0, 600, 600);
+    for(i=0;i<300;i++) {
+    drawLine2(0,i,600,i,"#CCCCCC");
+    i=i+19
+    }
     
-		for(i=0;i<600;i++){
-			drawLine(i,0,i,300,"#CCCCCC");
-			i=i+19
-		 }
-		 
-		 for(i=0;i<300;i++) {
-			drawLine(0,i,600,i,"#CCCCCC");
-			i=i+19
-     }
-     
-		 drawLine(0,160,600,160,"#000000");
-	 }
-	setInterval(move, 30);
+    drawLine2(0,160,600,160,"#000000");
+}
+setInterval(move, 20);
 init();
+init2();
 
 
 ////////////////////////////////////////////
@@ -284,20 +345,46 @@ init();
           fetch("mattlange.mp3")
             .then(response => response.arrayBuffer())
             .then(buffer => {
-              const audioContext = new AudioContext();
-              const options = {
-                audio_context: audioContext,
-                array_buffer: buffer,
-                scale: 128
-              };
+              // console.log( new Uint8Array(buffer))
+              function move2() {
+                var j=0;
+                var lastx=0;
+                var lasty=160;
+                var pos=0;
+                cleareData();
+                start=cnt;
+                
+                if(cnt>120) {
+                  start=120;
+                  pos=cnt-120;
+                }
+              
+                for(i=0;i<start;i++) {
+                  var p=i*5;
+                  drawLine2(lastx,lasty,p,new Uint16Array(buffer)[pos],"#000000");
+                  lastx=p;
+                  lasty=mydata[pos];
+                  pos++;
+                }
+                
+                cnt=cnt+1;
+              }
+              setInterval(move2, 40);
+
+              // const audioContext = new AudioContext();
+              // const options = {
+              //   audio_context: audioContext,
+              //   array_buffer: buffer,
+              //   scale: 128
+              // };
               return new Promise((resolve, reject) => {
-                WaveformData.createFromAudio(options, (err, waveform) => {
-                  if (err) {
-                    reject(err);
-                  } else {
-                    resolve(waveform);
-                  }
-                });
+                // WaveformData.createFromAudio(options, (err, waveform) => {
+                //   if (err) {
+                //     reject(err);
+                //   } else {
+                //     resolve(waveform);
+                //   }
+                // });
               });
             })
             .then(waveform => {
