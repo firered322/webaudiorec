@@ -169,10 +169,10 @@ window.onresize();
 
 
 var context;
-	var cntText;
-	var cnt=0;
-	var start=0;
-	var mydata = [160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
+var cntText;
+var cnt=0;
+var start=0;
+var mydata = [160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
 					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
 					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
 					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
@@ -218,16 +218,14 @@ var context;
 					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
 					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190];
 	
-	function init()
-	{
+	function init() {
 	 context= myCanvas.getContext('2d');
 	 cntText=document.getElementById("data");
 	 context.fillStyle = "#737373";
-     context.fill();
-	 
-	}
-	function drawLine(x1,y1,x2,y2,color)
-	{
+   context.fill();
+  }
+  
+	function drawLine(x1,y1,x2,y2,color) {
 		context.beginPath();
 		context.moveTo(x1,y1);
 		context.lineTo(x2,y2);
@@ -236,48 +234,81 @@ var context;
 		context.stroke();
 	}
 	
-	
-	function move()
-	{
-		 var j=0;
+	function move() {
+		var j=0;
 		var lastx=0;
 		var lasty=160;
 		var pos=0;
 		cleareData();
-		start=cnt;
-		if(cnt>120)
-		{
+    start=cnt;
+    
+		if(cnt>120) {
 			start=120;
 			pos=cnt-120;
-		}
-		for(i=0;i<start;i++)
-		{
+    }
+
+		for(i=0;i<start;i++) {
 			var p=i*5;
 			drawLine(lastx,lasty,p,mydata[pos],"#000000");
 			lastx=p;
 			lasty=mydata[pos];
 			pos++;
-		}
+    }
+    
 		cnt=cnt+1;
 	}
 	
-	function cleareData()
-	{
-		context.clearRect(0, 0, 600, 600);
-		for(i=0;i<600;i++)
-		 {
-		 
+	function cleareData() {
+    context.clearRect(0, 0, 600, 600);
+    
+		for(i=0;i<600;i++){
 			drawLine(i,0,i,300,"#CCCCCC");
 			i=i+19
 		 }
 		 
-		 for(i=0;i<300;i++)
-		 {
-		 
+		 for(i=0;i<300;i++) {
 			drawLine(0,i,600,i,"#CCCCCC");
 			i=i+19
-		 }
+     }
+     
 		 drawLine(0,160,600,160,"#000000");
 	 }
-	setInterval(move, 120);
+	setInterval(move, 30);
 init();
+
+
+////////////////////////////////////////////
+  document
+        .querySelector('button[data-action="generate"]')
+        .addEventListener("click", function() {
+          fetch("mattlange.mp3")
+            .then(response => response.arrayBuffer())
+            .then(buffer => {
+              const audioContext = new AudioContext();
+              const options = {
+                audio_context: audioContext,
+                array_buffer: buffer,
+                scale: 128
+              };
+              return new Promise((resolve, reject) => {
+                WaveformData.createFromAudio(options, (err, waveform) => {
+                  if (err) {
+                    reject(err);
+                  } else {
+                    resolve(waveform);
+                  }
+                });
+              });
+            })
+            .then(waveform => {
+              console.log(`Waveform has ${waveform.channels} channels`);
+              console.log(
+                "The UINT8 array from the waveform",
+                new Uint8Array(waveform["_adapter"]["_data"]["buffer"])
+              );
+              console.log(`Waveform has length ${waveform.length} points`);
+              updateOffsetSlider(waveform);
+              drawWaveform(canvas, waveform, 0);
+              waveformData = waveform;
+            });
+        });

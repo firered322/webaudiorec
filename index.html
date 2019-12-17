@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Web dictaphone</title>
-    <link href="styles/app.css" rel="stylesheet" type="text/css" />
-    <link href="styles/install-button.css" rel="stylesheet" type="text/css" />
-  </head>
+    <title>Ayu Audio</title>
+</head>
+
   <body>
     <div class="wrapper">
+
       <header>
         <h1>Ayu Audio</h1>
       </header>
@@ -23,9 +24,16 @@
 
       <section class="sound-clips"></section>
     </div>
-    <canvas id="myCanvas" width="600" height="300" >
-    </canvas>
+    <canvas id="myCanvas" width="600" height="300" ></canvas>
+    <br>
+    <br>
+    <audio id="audio" controls="controls">
+      <source src="mattlange.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
 
     <script src="app.js"></script>
   </body>
+
+
 </html>
