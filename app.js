@@ -342,7 +342,7 @@ init2();
   document
         .querySelector('button[data-action="generate"]')
         .addEventListener("click", function() {
-          fetch("AR_MS_MR.mp3")
+          fetch("2019_11_26_15_15_18.mp3")
             .then(response => response.arrayBuffer())
             .then(buffer => {
               console.log(buffer)
@@ -369,6 +369,6 @@ init2();
                 
                 cnt=cnt+1;
               }
-              // setInterval(move2, 90);
+              setInterval(move2, 90);
             });
         });
