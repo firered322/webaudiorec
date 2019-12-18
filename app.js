@@ -339,6 +339,8 @@ init2();
 
 
 ////////////////////////////////////////////
+
+// .mp3 extension gives better values for the Uint8Array buffer
   document
         .querySelector('button[data-action="generate"]')
         .addEventListener("click", function() {
