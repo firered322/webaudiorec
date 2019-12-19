@@ -1,5 +1,4 @@
 // set up basic variables for app
-
 var record = document.querySelector(".record");
 var stop = document.querySelector(".stop");
 var soundClips = document.querySelector(".sound-clips");
@@ -248,11 +247,11 @@ var mydata = [160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
 					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,
 					160,130,190,130,160,130,190,160,130,160,190,160,130,160,190,];
 
-// function init() {
-//   context= myCanvas.getContext('2d');
-//   context.fillStyle = "#737373";
-//   context.fill();
-// }
+function init() {
+  context= myCanvas.getContext('2d');
+  context.fillStyle = "#737373";
+  context.fill();
+}
 
 function init2(){
   context2 = myCanvas2.getContext('2d')
@@ -326,51 +325,56 @@ function cleareData2() {
     i=i+19
     }
     
-    for(i=0;i<400;i++) {
+    for(i=0;i<350;i++) {
     drawLine2(0,i,600,i,"#CCCCCC");
     i=i+19
     }
     
     drawLine2(0,160,600,160,"#000000");
 }
-// setInterval(move, 20);
+// setInterval(move, 40);
 // init();
 init2();
 
 
 ////////////////////////////////////////////
 
+var onButtonClick = function() {
+  fetch("2019_11_26_15_15_18.wav")
+    .then(response => response.arrayBuffer())
+    .then(buffer => {
+      console.log(buffer)
+      function move2() {
+        var j=0;
+        var lastx=0;
+        var lasty=160;
+        var pos=0;
+        cleareData2();
+        start=cnt;
+        
+        if(cnt>120) {
+          start=120;
+          pos=cnt-120;
+        }
+      
+        for(i=0;i<start;i++) {
+          var p=i*5;
+          drawLine2(lastx,lasty,p,new Uint8Array(buffer)[pos],"#000000");
+          lastx=p;
+          lasty=mydata[pos] + 50;
+          pos++;
+        }
+        
+        cnt=cnt+1;
+      }
+      setInterval(move2, 90);
+    });
+}
+
 // .mp3 extension gives better values for the Uint8Array buffer
+
+
+
   document
         .querySelector('button[data-action="generate"]')
-        .addEventListener("click", function() {
-          fetch("2019_11_26_15_15_18.mp3")
-            .then(response => response.arrayBuffer())
-            .then(buffer => {
-              console.log(buffer)
-              function move2() {
-                var j=0;
-                var lastx=0;
-                var lasty=160;
-                var pos=0;
-                cleareData2();
-                start=cnt;
-                
-                if(cnt>120) {
-                  start=120;
-                  pos=cnt-120;
-                }
-              
-                for(i=0;i<start;i++) {
-                  var p=i*5;
-                  drawLine2(lastx,lasty,p,new Uint8Array(buffer)[pos],"#000000");
-                  lastx=p;
-                  lasty=mydata[pos] + 150;
-                  pos++;
-                }
-                
-                cnt=cnt+1;
-              }
-              setInterval(move2, 90);
-            });
-        });
+        .addEventListener("click", onButtonClick);        
